@@ -10,11 +10,11 @@ import os
 def connect():
     load_dotenv('.env')
     cnx = pymysql.connect(
-        user     = os.getenv("DB_USER"),
+        user     = "chemsdine",
         password = os.getenv("DB_PASSWORD"),
-        host     = os.getenv("DB_HOST"),
+        host     = "chemsdineserver.mysql.database.azure.com",
         port     = int(os.getenv("DB_PORT")),
-        database = os.getenv("DB_NAME"),
+        database = "retard_avion",
         ssl      = {'ssl_disabled': os.getenv("DB_SSL_DISABLED") == "True"}
     )
     return cnx
