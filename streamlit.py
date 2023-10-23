@@ -1,10 +1,14 @@
 import pandas as pd
 import streamlit as st 
 from db import *
+from front import *
 
 def main():
-    st.write("Hello")
 
+    
+    background_front(url="https://wallpapers.com/images/hd/netflix-background-ay2odaz7o4zltn0q.jpg")
+    st.title("Recommandation Films")
+    
     # Le formulaire.
     with st.form("my_form"):
         st.write("Veuillez remplir le formulaire")
