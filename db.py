@@ -10,11 +10,11 @@ import os
 def connect():
     load_dotenv('.env')
     cnx = pymysql.connect(
-        user     = "chemsdine",
+        user     = os.getenv("DB_USERNAME"),
         password = os.getenv("DB_PASSWORD"),
-        host     = "chemsdineserver.mysql.database.azure.com",
+        host     = os.getenv("DB_HOST"),
+        port     = int(os.getenv("DB_PORT")),
         database = "netflix",
-        ssl      = {'ssl_disabled': os.getenv("DB_SSL_DISABLED") == "True"}
     )
     return cnx
 
@@ -45,7 +45,7 @@ def create_tables(table_name_1: str, table_name_2: str, connexion, cursor):
     connexion.commit()
 
 
-def send_db(dict:dict):
+def send_db():
     
     # connexion à la db.
     cnx = connect()
@@ -61,3 +61,5 @@ def send_db(dict:dict):
     cursor.close()
     
     # Insertion des données
+
+send_db()
