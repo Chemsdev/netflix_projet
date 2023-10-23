@@ -4,62 +4,50 @@ import mysql.connector
 import pymysql
 from dotenv import load_dotenv
 import os
+import streamlit as st 
+from tools import *
+
+# ======================================================================================>
+
+# Fonction permettent d'insérer les données.
+def insert_data_to_database(data, table1, table2, columns_features, connexion):
+    
+    # Insertion table 1.
+    cursor = connexion.cursor()
+    value_features = list(data.values())
+    del value_features[-1]
+    table1_sql = f"INSERT INTO {table1} ({', '.join(columns_features)}) VALUES ({', '.join(['%s' for _ in range(len(columns_features))])})"
+    cursor.execute(table1_sql, value_features)
 
 
-# Initialisation connexion BDD.
-def connect():
-    load_dotenv('.env')
-    cnx = pymysql.connect(
-        user     = os.getenv("DB_USERNAME"),
-        password = os.getenv("DB_PASSWORD"),
-        host     = os.getenv("DB_HOST"),
-        port     = int(os.getenv("DB_PORT")),
-        database = "netflix",
-    )
-    return cnx
+    # Insertion table 2.
+    inserted_id = cursor.lastrowid
+    table2_columns = ["id_fk", "y_pred"]
+    table2_values = [inserted_id, data["Prediction"]]
+    table2_sql = f"INSERT INTO {table2} ({', '.join(table2_columns)}) VALUES ({', '.join(['%s' for _ in range(len(table2_columns))])})"
+    cursor.execute(table2_sql, table2_values)
 
-# cnx = connect()
-# cursor = cnx.cursor()    
-
-# Fonction permettant de créer les tables dans une base de données.
-def create_tables(table_name_1: str, table_name_2: str, connexion, cursor):
-    # Table 1.
-    cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name_1}
-        (id INT AUTO_INCREMENT PRIMARY KEY,
-         A INTEGER,
-         B INTEGER,
-         C TEXT,
-         D INTEGER,
-         E TEXT
-        )''')
-    print(f"Table '{table_name_1}' créée avec succès.")
-
-    # Table 2.
-    cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name_2}
-        (id INT AUTO_INCREMENT PRIMARY KEY,
-         id_fk INT,
-         y_pred TEXT,
-         FOREIGN KEY (id_fk) REFERENCES {table_name_1}(id)
-        )''')
-    print(f"Table '{table_name_2}' créée avec succès.")
+    print("Données insérées avec succès.")
     connexion.commit()
 
+# ======================================================================================>
 
-def send_db():
+# Fonction
+def send_db(data):
     
     # connexion à la db.
     cnx = connect()
     cursor = cnx.cursor()    
-    
-    # Création des tables.
-    create_tables(
-        table_name_1 = "A", 
-        table_name_2 = "B", 
-        connexion    = cnx, 
-        cursor       = cursor
+
+    # Insertion des données.
+    insert_data_to_database(
+        data=data,
+        table1="personne",
+        table2="film",
+        columns_features=["A", "B", "C", "D", "E"],
+        connexion=cnx
     )
+
+    # Fermeture connexion.
     cursor.close()
     
-    # Insertion des données
-
-send_db()

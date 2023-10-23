@@ -14,23 +14,26 @@ def main():
         st.write("Veuillez remplir le formulaire")
         
         # Dictionnaire contenant les inputs.
-        dictionnaire = {
+        data = {
             "input1" : st.text_input("Champ 1"),
             "input2" : st.text_input("Champ 2"),
             "input3" : st.text_input("Champ 3"),
-            "input4" : st.text_input("Champ 4")    
+            "input4" : st.text_input("Champ 4"),
+            "input5" : st.text_input("Champ 5")  
         }
+    
+        # Ajout de la prédiction.
+        data["Prediction"] = "coucou"
         
         # Envoi du formuaire.
         submitted = st.form_submit_button("Envoyer")
         if submitted:
             
             # envoyer les données.
-            send_db(dict=dictionnaire)
+            send_db(data=data)
             
             # Affichage des résultats.
             st.write("Les prédictions :")
-
 
 
 main()
