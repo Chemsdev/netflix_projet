@@ -45,11 +45,19 @@ def create_tables(table_name_1: str, table_name_2: str, connexion, cursor):
     connexion.commit()
 
 
-cnx = connect()
-cursor = cnx.cursor()    
-create_tables(table_name_1="A", 
-              table_name_2="B", 
-              connexion=cnx, 
-              cursor=cursor
-)
-cursor.close()
+def send_db(dict:dict):
+    
+    # connexion à la db.
+    cnx = connect()
+    cursor = cnx.cursor()    
+    
+    # Création des tables.
+    create_tables(
+        table_name_1 = "A", 
+        table_name_2 = "B", 
+        connexion    = cnx, 
+        cursor       = cursor
+    )
+    cursor.close()
+    
+    # Insertion des données
