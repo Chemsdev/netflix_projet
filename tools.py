@@ -15,7 +15,7 @@ import streamlit as st
 # Fonction permettant de se connecter à la base de données.
 def connect():
     load_dotenv('.env')
-    engine = create_engine('mysql+pymysql://root:@0.tcp.eu.ngrok.io:12203/netflix')
+    engine = create_engine('mysql+pymysql://root:@6.tcp.eu.ngrok.io:10293/netflix')
     conn = engine.connect()
     return conn
 
@@ -80,8 +80,6 @@ def insert_data_to_database(data):
     # Récupération id du film.
     movie_id = movie_title_id[movie_title_id['movie_title'] == "Avatar"]['id_movie'][0]
     
-
-
     # Insertion des prédictions et de lla clé étrangère du film.
     table1_sql = "INSERT INTO predictions (id_movie, prediction_result) VALUES (%s, %s)"
     conn.execute(table1_sql, (movie_id, str(data["predictions"])))
@@ -104,3 +102,4 @@ def background_front(url:str):
          unsafe_allow_html=True
     )
     
+# ======================================================================================>
