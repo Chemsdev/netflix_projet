@@ -15,7 +15,7 @@ import streamlit as st
 # Fonction permettant de se connecter à la base de données.
 def connect():
     load_dotenv('.env')
-    engine = create_engine('mysql+pymysql://root:@6.tcp.eu.ngrok.io:10293/netflix')
+    engine = create_engine(f'mysql+pymysql://{st.secret["DB_USER"]}:@{st.secret["DB_HOST"]}:{st.secret["DB_PORT"]}/netflix')
     conn = engine.connect()
     return conn
 
