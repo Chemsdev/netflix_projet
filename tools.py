@@ -9,13 +9,13 @@ from dotenv import load_dotenv
 # Autres
 import pandas as pd
 import streamlit as st
-
+import os
 # ================================================================================>
 
 # Fonction permettant de se connecter à la base de données.
 def connect():
     load_dotenv('.env')
-    engine = create_engine(f'mysql+pymysql://{st.secret["DB_USER"]}:@{st.secret["DB_HOST"]}:{st.secret["DB_PORT"]}/netflix')
+    engine = create_engine(f'mysql+pymysql://{os.getenv("DB_USER")}:@{st.secret("DB_HOST")}:{st.secret("DB_PORT")}/netflix')
     conn = engine.connect()
     return conn
 # ================================================================================>
