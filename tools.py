@@ -18,7 +18,6 @@ def connect():
     engine = create_engine(f'mysql+pymysql://{st.secret["DB_USER"]}:@{st.secret["DB_HOST"]}:{st.secret["DB_PORT"]}/netflix')
     conn = engine.connect()
     return conn
-
 # ================================================================================>
 
 # Fonction permettant de créer les tables dans une base de données.
